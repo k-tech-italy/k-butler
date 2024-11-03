@@ -1,0 +1,10 @@
+.*
+~*
+*.pyc
+*.egg-info
+!.gitignore
+!.bumpversion.cfg
+!.pre-commit-config.yaml
+!.*.example
+!.python-version
+

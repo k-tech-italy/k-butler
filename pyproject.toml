@@ -1,0 +1,57 @@
+[project]
+name = "k-butler"
+version = "0.1.0"
+description = "K-Butler"
+authors = [
+    {name = "K-Tech", email = "info@k-tech.it"},
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "click>=8.1.7",
+    "pyqt6>=6.7.1",
+]
+
+[project.scripts]
+my-client = "my_package.my_module:main_cli"
+
+[tool.uv]
+default-groups = ["dev", "exe_builder"]
+
+[dependency-groups]
+dev = [
+    "PyMarkdown>=0.1.4",
+    "cairosvg>=2.7.1",
+    "markupsafe>=2.1.5",
+    "mdx-gh-links>=0.4",
+    "mkdocs-autolinks-plugin>=0.7.1",
+    "mkdocs-awesome-pages-plugin>=2.9.3",
+    "mkdocs-click>=0.8.1",
+    "mkdocs-ezglossary-plugin>=1.6.10",
+    "mkdocs-ezlinks-plugin>=0.1.14",
+    "mkdocs-gen-files>=0.5.0",
+    "mkdocs-get-deps>=0.2.0",
+    "mkdocs-link-marker>=0.1.3",
+    "mkdocs-macros-plugin>=1.0.5",
+    "mkdocs-material>=9.5.15",
+    "mkdocs-simple-hooks>=0.1.5",
+    "mkdocs>=1.5.3",
+    "mkdocstrings[python]>=0.24.1",
+    "pymdown-extensions>=10.7.1",
+    "mkdocs-embed-external-markdown>=3.0.2",
+    "mkdocs-include-markdown-plugin>=6.2.2",
+    "mkdocs-redirects>=1.2.1",
+    "mkdocs-minify-plugin>=0.8.0",
+    "pre-commit>=4.0.1",
+    "flake8>=7.1.1",
+    "isort>=5.13.2",
+    "bumpversion>=0.6.0",
+    "pytest>=8.3.3",
+]
+exe_builder = [
+    "pyinstaller>=6.11.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
