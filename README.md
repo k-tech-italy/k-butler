@@ -15,3 +15,5 @@
 mkdocs build
 mkdocs serve
 ```
+
+[PyQT6 Tutorial](https://www.pythonguis.com/tutorials/pyqt6-widgets/)
