@@ -39,7 +39,7 @@ class Main(QMainWindow):
 
         self.tabActionsWidget = TabWidget(self)
         layout.addWidget(self.tabActionsWidget)
-        layout.addWidget(QLabel("Hello"))
+        layout.addWidget(QLabel("Start by selecting the files"))
 
         # Set the central widget of the Window. Widget will expand
         # to take up all the space in the window by default.

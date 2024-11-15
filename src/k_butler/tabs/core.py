@@ -2,6 +2,7 @@ from PyQt6.QtCore import pyqtSlot, Qt
 from PyQt6.QtWidgets import QFileDialog, QLabel, QPushButton, QTabWidget, QVBoxLayout, QWidget
 
 from k_butler.controller import controller
+from k_butler.filesbo import FileBo
 
 ADD_FILES = 'Add file(s)'
 
@@ -43,8 +44,8 @@ class FileSelect(LabeledMixin, QWidget):
         self.button.setText(ADD_FILES)
 
     def dropEvent(self, event):
-        print('dropEvent')
         files = [u.toLocalFile() for u in event.mimeData().urls()]
+
         self.handle_files(files)
 
     @pyqtSlot()
@@ -55,8 +56,8 @@ class FileSelect(LabeledMixin, QWidget):
             "",  # eg. ${HOME}
             "All Files (*);; Excel (*.xlsx);; Calc (*.ods)",
         )
-        self.handle_files(fnames)
+        self.handle_files(fnames[0])
 
     def handle_files(self, files: list[str]) -> None:
         for f in files:
-            controller.get_or_create_window(f).show()
+            controller.get_or_create_window(FileBo(f)).show()

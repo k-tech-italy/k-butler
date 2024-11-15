@@ -9,6 +9,12 @@
 5. Run `direnv allow`
 6. Run `uv sync`
 
+### Ubuntu dependencies
+
+```shell
+sudo apt-get install -y libxcb-cursor-dev
+```
+
 ## Documentation
 
 ```shell
