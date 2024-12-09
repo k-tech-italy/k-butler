@@ -3,6 +3,10 @@ from typing import Optional
 from k_butler.strategies.base import register
 
 
+def split():
+    return 'split'
+
+
 @register
 class SwPayrollProcessor:
     name = 'Singlewave Payroll processor'
@@ -11,7 +15,7 @@ class SwPayrollProcessor:
         'split': 'Just split',
         'configure': 'Configure payroll',
     }
+    split = split()
 
     def match(self, filename) -> Optional[list]:
         return self.actions
-
