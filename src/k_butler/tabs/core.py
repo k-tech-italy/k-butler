@@ -59,5 +59,11 @@ class FileSelect(LabeledMixin, QWidget):
         self.handle_files(fnames[0])
 
     def handle_files(self, files: list[str]) -> None:
+        not_found = []
         for f in files:
-            controller.get_or_create_window(FileBo(f)).show()
+            if not controller.get_or_create_window(FileBo(f)):
+                not_found.append(f)
+        if not_found:
+            # TODO: Popup modal with list of unmatched files
+            print(1)
+                # .show()

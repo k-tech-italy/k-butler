@@ -1,9 +1,11 @@
+from typing import Any, Dict
+
 
 class Registry:
     _strategies = {}
 
     @property
-    def strategies(self) -> dict:
+    def strategies(self) -> Dict[str, Any]:
         return self._strategies
 
     def load(self):
@@ -20,3 +22,5 @@ def register(klass):
     return klass
 
 
+class StrategyBaseConfigurator:
+    page = None

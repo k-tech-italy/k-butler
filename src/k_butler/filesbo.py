@@ -3,6 +3,7 @@ from pathlib import Path
 
 class FileBo:
     def __init__(self, fullpath: str):
+        self.handlers = []  # The list of strategies that know how to handle this file
         self.fullpath = Path(fullpath)
 
     @property
@@ -25,3 +26,5 @@ class FileBo:
     def parts(self) -> tuple[str, str, str]:
         return self.path, self.stem, self.extension
 
+    def add_handler(self, strategy):
+        self.handlers.append(strategy)
