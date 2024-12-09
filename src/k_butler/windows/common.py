@@ -9,6 +9,16 @@ class AnotherWindowBase(QWidget):
     This "window" is a QWidget. If it has no parent, it
     will appear as a free-floating window as we want.
     """
+
+    '''        for title, klass in strategies.items():
+            tree.setHeaderLabels([title])
+            for action in klass.actions.keys():
+                item = QTreeWidgetItem([action])
+                tree.addTopLevelItem(item)
+                item.setData(0, Qt.ItemDataRole.UserRole, (klass, action))
+
+        tree.itemClicked.connect(self.trigger_action)'''
+
     def __init__(self, filebo: FileBo):
         super().__init__()
         self.setWindowTitle(filebo.name)
@@ -20,9 +30,13 @@ class AnotherWindowBase(QWidget):
 
         tree = QTreeWidget()
 
-        tree.setHeaderLabels(['Actions'])
-        tree.addTopLevelItem(QTreeWidgetItem(['One']))
-        tree.addTopLevelItem(QTreeWidgetItem(['Two']))
+        for handler in filebo.handlers:
+            tree.setHeaderLabels([handler.name])
+            for action in handler.actions.keys():
+                item = QTreeWidgetItem([action])
+                tree.addTopLevelItem(item)
+                item.setData(0, Qt.ItemDataRole.UserRole, (handler, action))
+            #tree.itemClicked.connect(self.trigger_action)
 
         splitter.addWidget(tree)
         splitter.addWidget(QLabel('Right'))
