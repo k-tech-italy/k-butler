@@ -1,5 +1,5 @@
 from PyQt6.QtCore import pyqtSlot, Qt
-from PyQt6.QtWidgets import QFileDialog, QLabel, QPushButton, QTabWidget, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QFileDialog, QLabel, QPushButton, QTabWidget, QVBoxLayout, QWidget, QDialog, QMessageBox
 
 from k_butler.controller import controller
 from k_butler.filesbo import FileBo
@@ -64,6 +64,8 @@ class FileSelect(LabeledMixin, QWidget):
             if not controller.get_or_create_window(FileBo(f)):
                 not_found.append(f)
         if not_found:
-            # TODO: Popup modal with list of unmatched files
-            print(1)
-                # .show()
+            modal = QMessageBox()
+            modal.setWindowTitle("Actions not found")
+            modal.setText(f"Actions not found for: {', '.join(not_found)}")
+            modal.setModal(True)
+            modal.exec()
