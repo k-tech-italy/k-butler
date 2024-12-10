@@ -14,6 +14,7 @@ class HomePage():
         hLayout.addWidget(self.loadBtn)
         vLayout.addLayout(hLayout)
 
+
         # self.filesTv = QtWidgets.QTableView(self)
         # vLayout.addWidget(self.filesTv)
         # self.filesTv.setSortingEnabled(True)

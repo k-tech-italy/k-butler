@@ -26,6 +26,8 @@ class FileSelect(LabeledMixin, QWidget):
 
         self.button = QPushButton(ADD_FILES)
         self.setAcceptDrops(True)
+        self.setMinimumHeight(100)
+        self.setMinimumWidth(400)
 
         layout = QVBoxLayout(self)
         layout.addWidget(self.button, alignment=Qt.AlignmentFlag.AlignCenter)
