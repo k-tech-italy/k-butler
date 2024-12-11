@@ -1,16 +1,12 @@
 import sys
 
-from PyQt6 import QtWidgets
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget
 
 from k_butler.controller import controller
-from k_butler.tabs.core import FileSelect
 from k_butler import __version__
 from k_butler.strategies.base import Registry
-from k_butler.widgets.tab_widget import TabWidget
+from k_butler.widgets.tabs_widget import TabsWidget
 
-# from k_butler.kt_styles.kt_tabs import CustomTabStyle, TabWidget
 
 FILESTORE = '.'
 
@@ -37,9 +33,8 @@ class Main(QMainWindow):
         widget = QWidget()
         widget.setLayout(layout)
 
-        self.tabActionsWidget = TabWidget(self)
-        layout.addWidget(self.tabActionsWidget)
-        layout.addWidget(QLabel("Start by selecting the files"))
+        tabs = TabsWidget(self)
+        layout.addWidget(tabs)
 
         # Set the central widget of the Window. Widget will expand
         # to take up all the space in the window by default.

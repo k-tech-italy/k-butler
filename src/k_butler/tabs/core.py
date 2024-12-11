@@ -7,15 +7,7 @@ from k_butler.filesbo import FileBo
 ADD_FILES = 'Add file(s)'
 
 
-class LabeledMixin:
-    tabLabel = '<undefined>'
-
-    @property
-    def get_label(self):
-        return self.tabLabel
-
-
-class FileSelect(LabeledMixin, QWidget):
+class FileSelect(QWidget):
     tabLabel = 'Select File'
 
     def get_label(self):
@@ -32,6 +24,8 @@ class FileSelect(LabeledMixin, QWidget):
         layout = QVBoxLayout(self)
         layout.addWidget(self.button, alignment=Qt.AlignmentFlag.AlignCenter)
         self.button.clicked.connect(self.open_dialog)
+
+        self.setLayout(layout)
 
     def dragEnterEvent(self, event, QDragEnterEvent=None):  # real signature unknown; restored from __doc__
         """ dragEnterEvent(self, a0: Optional[QDragEnterEvent]) """
@@ -61,13 +55,7 @@ class FileSelect(LabeledMixin, QWidget):
         self.handle_files(fnames[0])
 
     def handle_files(self, files: list[str]) -> None:
-        not_found = []
+        files_bo = []
         for f in files:
-            if not controller.get_or_create_window(FileBo(f)):
-                not_found.append(f)
-        if not_found:
-            modal = QMessageBox()
-            modal.setWindowTitle("Actions not found")
-            modal.setText(f"Actions not found for: {', '.join(not_found)}")
-            modal.setModal(True)
-            modal.exec()
+            files_bo.append(FileBo(f))
+        controller.get_or_create_window(files_bo)
