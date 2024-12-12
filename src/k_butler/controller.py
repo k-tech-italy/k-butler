@@ -1,18 +1,9 @@
 from typing import Dict, List
 
-from PyQt6.QtWidgets import QMessageBox
-
 from k_butler.filesbo import FileBo
 from k_butler.strategies.base import Registry
 from k_butler.windows.common import AnotherWindowBase
-
-
-def create_modal(path):
-    modal = QMessageBox()
-    modal.setWindowTitle("Actions not found")
-    modal.setText(f"Actions not found for: {path}")
-    modal.setModal(True)
-    modal.exec()
+from k_butler.components.common import create_error_modal
 
 
 class Controller:
@@ -30,7 +21,7 @@ class Controller:
                 if not (StrategyKlass().match(f)):  # if matches the strategy will add itself to the list
                     # file_bo.handlers
                     files_bo.pop(files_bo.index(f))
-                    create_modal(f.fullpath)
+                    create_error_modal(f.fullpath, 'Actions not found for:')
         if files_bo:
             self.windows.setdefault('test', AnotherWindowBase(files_bo)).show()
 

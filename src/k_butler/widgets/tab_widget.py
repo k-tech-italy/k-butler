@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QPushButton, QTabWidget, QVBoxLayout, QWidget
 
-from k_butler.tabs.core import FileSelect
+from k_butler.tabs.files import FileSelect
 
 
 class TabWidget(QTabWidget):

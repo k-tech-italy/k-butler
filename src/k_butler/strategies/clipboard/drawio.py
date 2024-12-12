@@ -1,4 +1,5 @@
 from PyQt6.QtCore import pyqtSlot
+import pyperclip
 
 
 class DrawioCreateTableParse:
@@ -6,14 +7,17 @@ class DrawioCreateTableParse:
     description = ''
     actions = {
         'copy': 'copy to clipboard',
+        'parse': 'parse clipboard',
     }
 
     def match(self, text: str) -> bool:
         return text.upper().startswith('CREATE TABLE ')
 
     @pyqtSlot()
-    def parse(self, text):
-        text = paperclip.paste()
+    def parse(self, parent):
+        text = pyperclip.paste()
+        match = self.match(text)
+
         result = f'{text}_1'
-        paperclip.copy(result)
-        # TODO: put result in UI textarea (RO?)
+        pyperclip.copy(result)
+        parent.editor.setPlainText(result)

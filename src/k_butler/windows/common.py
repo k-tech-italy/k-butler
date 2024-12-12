@@ -1,8 +1,9 @@
 from typing import List
 
-from PyQt6.QtWidgets import QLabel, QVBoxLayout, QWidget, QPushButton, QToolBox, QGridLayout, QGroupBox, QHBoxLayout
+from PyQt6.QtWidgets import QLabel, QVBoxLayout, QWidget, QToolBox, QGridLayout, QGroupBox, QHBoxLayout
 
 from k_butler.filesbo import FileBo
+from k_butler.components.common import create_buttons_actions
 
 
 def create_strategy_result():
@@ -59,7 +60,7 @@ class AnotherWindowBase(QWidget):
         component = QToolBox()  # TODO add group strategy
         for f in self.files_bo:
             for handler in f.handlers:
-                component.addItem(self.create_buttons_actions(handler), handler.name)
+                component.addItem(create_buttons_actions(self.files_bo, handler), handler.name)
             return component
 
     def create_content_layout(self):
@@ -77,23 +78,6 @@ class AnotherWindowBase(QWidget):
 
         component.setLayout(layout)
         return component
-
-    def create_buttons_actions(self, strategy):
-        result = QGroupBox("Actions")
-        button_layout = QVBoxLayout()
-
-        for action in strategy.actions.keys():
-            button = QPushButton(action)
-            button.setDefault(True)
-            button.clicked.connect(lambda checked, a=action, f=self.files_bo[0]: strategy.get_action(a, f))
-
-            button_layout.addWidget(button)
-
-        button_layout.addStretch(1)
-        main_layout = QHBoxLayout(result)
-        main_layout.addLayout(button_layout)
-        main_layout.addStretch()
-        return result
 
 
 def make_window(title):
