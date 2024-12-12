@@ -9,7 +9,7 @@ class Registry:
         return self._strategies
 
     def load(self):
-        pass
+        from k_butler.strategies.files.sw_payroll.sw_payroll import SwPayrollStrategy as _
 
 
 def register(klass):

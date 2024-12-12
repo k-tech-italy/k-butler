@@ -1,22 +1,8 @@
 from typing import List
 
-from PyQt6.QtWidgets import QLabel, QVBoxLayout, QWidget, QToolBox, QGridLayout, QGroupBox, QHBoxLayout
+from PyQt6.QtWidgets import QLabel, QVBoxLayout, QWidget, QToolBox, QGridLayout, QGroupBox, QHBoxLayout, QPushButton
 
 from k_butler.filesbo import FileBo
-from k_butler.components.common import create_buttons_actions
-
-
-def create_strategy_result():
-    result = QGroupBox("Result")
-    h_layout = QHBoxLayout(result)
-    v_layout = QVBoxLayout()
-    v_layout.addWidget(QLabel("Result"))
-    v_layout.addStretch(1)
-
-    h_layout.addLayout(v_layout)
-    h_layout.addStretch()
-
-    return result
 
 
 class AnotherWindowBase(QWidget):
@@ -27,6 +13,7 @@ class AnotherWindowBase(QWidget):
 
     def __init__(self, files_bo: List[FileBo]):
         super().__init__()
+        self.action_detail = None
         self.setWindowTitle('K-Butler')
         self.setMinimumHeight(400)
         self.setMinimumWidth(600)
@@ -60,7 +47,7 @@ class AnotherWindowBase(QWidget):
         component = QToolBox()  # TODO add group strategy
         for f in self.files_bo:
             for handler in f.handlers:
-                component.addItem(create_buttons_actions(self.files_bo, handler), handler.name)
+                component.addItem(self.create_buttons_actions(handler), handler.name)
             return component
 
     def create_content_layout(self):
@@ -69,15 +56,56 @@ class AnotherWindowBase(QWidget):
         """
         component = QGroupBox('content')
         layout = QGridLayout()
-
         strategy_toolbox = self.create_strategy_toolbox()
-        strategy_result = create_strategy_result()
+        self.action_detail = self.create_action_detail()
 
         layout.addWidget(strategy_toolbox, 1, 1)
-        layout.addWidget(strategy_result, 1, 2)
+        layout.addWidget(self.action_detail, 1, 2)
 
         component.setLayout(layout)
         return component
+
+    def create_buttons_actions(self, strategy):
+
+        buttons_component = QGroupBox("Actions")
+        button_layout = QVBoxLayout()
+
+        for action in strategy.actions.keys():
+            button = QPushButton(action)
+            button.setDefault(True)
+            # button.clicked.connect(lambda checked, a=action, f=self.files_bo[0]: strategy.get_action(a, f))
+            button.clicked.connect(lambda checked, a=action: self.update_action_detail(a))
+            button_layout.addWidget(button)
+
+        button_layout.addStretch(1)
+        main_layout = QHBoxLayout(buttons_component)
+        main_layout.addLayout(button_layout)
+        main_layout.addStretch()
+
+        return buttons_component
+
+    def update_action_detail(self, action):
+        self.label.setText(f'{action}')
+
+    def create_action_detail(self):
+
+        result = QGroupBox("Action details")
+        self.label = QLabel("Select an action")
+
+        h_layout = QHBoxLayout(result)
+        v_layout = QVBoxLayout()
+        v_layout.addWidget(self.label)
+        v_layout.addStretch(1)
+
+        button = QPushButton(self.label)
+        button.setDefault(True)
+        #button.clicked.connect(lambda checked, a=self.label, f=self.files_bo[0]: strategy.get_action(a, f))
+        v_layout.addWidget(button)
+
+        h_layout.addLayout(v_layout)
+        h_layout.addStretch()
+
+        return result
 
 
 def make_window(title):

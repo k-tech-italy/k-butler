@@ -2,7 +2,7 @@ from typing import Dict, List
 
 from k_butler.filesbo import FileBo
 from k_butler.strategies.base import Registry
-from k_butler.windows.common import AnotherWindowBase
+from k_butler.windows.file_handler import AnotherWindowBase
 from k_butler.components.common import create_error_modal
 
 
@@ -16,7 +16,7 @@ class Controller:
 
     def get_or_create_window(self, files_bo: List[FileBo]):
         """If a matching strategy is found it will create a window, add it to windows dict, and return True."""
-        for name, StrategyKlass in Registry().strategies.items():
+        for name, StrategyKlass in Registry().strategies.items():  #TODO FIX LOAD METHOD FOR REGISTRY
             for f in files_bo:
                 if not (StrategyKlass().match(f)):  # if matches the strategy will add itself to the list
                     # file_bo.handlers
