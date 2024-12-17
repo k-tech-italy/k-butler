@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QGroupBox, QGridLayout
 
-from k_butler.components.common import KTTextEdit, KTStrategyAccordion
+from k_butler.components.common import GuiTextEdit, GuiAccordion
 from k_butler.strategies.files.sw_payroll.sw_payroll import SwPayrollStrategy
 
 
@@ -11,11 +11,11 @@ class ConfigTab(QWidget):
     def __init__(self, parent=..., *args):
         super().__init__(parent, *args)
         main_layout = QVBoxLayout()
-        self.editor = KTTextEdit()
+        self.editor = GuiTextEdit()
 
         action_layout = QGroupBox('Actions')
         layout = QGridLayout()
-        strategy_toolbox = KTStrategyAccordion(self.update_action_detail, configurator=self.strategy.configurator)
+        strategy_toolbox = GuiAccordion(self.update_action_detail, configurator=self.strategy.configurator)
 
         layout.addWidget(strategy_toolbox, 1, 1)
         layout.addWidget(self.editor, 1, 2)

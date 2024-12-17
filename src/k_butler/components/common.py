@@ -9,7 +9,7 @@ def create_error_modal(name, error_message='generic error'):
     modal.exec()
 
 
-class KTTextEdit(QTextEdit):
+class GuiTextEdit(QTextEdit):
 
     def __init__(self, text='', ):
         super().__init__()
@@ -20,7 +20,7 @@ class KTTextEdit(QTextEdit):
         super().setPlainText(text)
 
 
-class KTStrategyAccordion(QToolBox):
+class GuiAccordion(QToolBox):
     def __init__(self, update_action_detail, files_bo=None, configurator=None):
         """
         Creates a QToolBox widget populated with action buttons.

@@ -2,7 +2,7 @@ from typing import List
 
 from PyQt6.QtWidgets import QLabel, QVBoxLayout, QWidget, QToolBox, QGridLayout, QGroupBox, QHBoxLayout, QPushButton
 
-from k_butler.components.common import KTStrategyAccordion
+from k_butler.components.common import GuiAccordion
 from k_butler.filesbo import FileBo
 
 
@@ -58,7 +58,7 @@ class AnotherWindowBase(QWidget):
         """
         component = QGroupBox('content')
         layout = QGridLayout()
-        strategy_toolbox = KTStrategyAccordion(self.files_bo, self.update_action_detail)
+        strategy_toolbox = GuiAccordion(self.files_bo, self.update_action_detail)
         self.action_detail = self.create_action_detail()
 
         layout.addWidget(strategy_toolbox, 1, 1)
