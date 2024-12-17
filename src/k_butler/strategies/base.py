@@ -15,7 +15,7 @@ class Registry:
 
 
 def register(klass):
-    Registry._strategies[klass.name] = klass
+    Registry._strategies[klass.key] = klass
 
     # def wrapper_func():
     #     # Do something before the function.

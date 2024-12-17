@@ -13,6 +13,7 @@ from k_butler.strategies.utils import open_file
 @register
 class SwPayrollStrategy:
     name = 'Singlewave Payroll processor'
+    key = 'sw_payroll'
     description = 'Single wave payroll processor strategy.'
     actions = {
         'split': 'docs/split.txt',

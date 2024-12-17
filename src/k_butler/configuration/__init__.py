@@ -3,22 +3,24 @@ from pathlib import Path
 import platformdirs
 import yaml
 
+from k_butler.strategies.base import Registry
+
 
 class ConfigStorage:
-    def __init__(self, strategy = None):
-        if strategy is None:
-            self.strategy = '__global.yaml__'
+    def __init__(self, strategy_name = None):
+        if strategy_name is None:
+            self.strategy_filename = '__global.yaml__'
             self.example = Path(__file__).parent / '__global__.example.yaml'
         else:
-            self.strategy = f'modules/{strategy.configurator.get_config_filename()}'
-            self.example = strategy.configurator.get_example_file()  # TODO: check how to do
+            strategy = Registry().strategies[strategy_name]
+            self.strategy_filename = f'modules/{strategy.configurator.get_config_filename()}'
+            self.example = strategy.configurator.get_example_file()
 
     def _get_config_path(self):
-        return platformdirs.user_config_path(self.strategy)
+        return platformdirs.user_config_path(self.strategy_filename)
 
     def _get_config_file(self) -> Path:
-
-        config_file = self._get_config_path(self.strategy)
+        config_file = self._get_config_path()
         if not config_file.parent.exists():
             config_file.parent.mkdir(parents=True)
 
