@@ -5,12 +5,9 @@ from PyPDF2 import PdfReader, PdfWriter
 from PyQt6.QtCore import pyqtSlot
 
 from k_butler.filesbo import FileBo
-from k_butler.strategies.base import register, StrategyBaseConfigurator
+from k_butler.strategies.base import register
+from k_butler.strategies.files.sw_payroll.configuration import SwPayrollConfigurator
 from k_butler.strategies.utils import open_file
-
-
-class SwPayrollConfigurator(StrategyBaseConfigurator):
-    pass
 
 
 @register

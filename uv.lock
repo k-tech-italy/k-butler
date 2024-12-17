@@ -389,6 +389,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
+    { name = "platformdirs" },
     { name = "pypdf2" },
     { name = "pyperclip" },
     { name = "pyqt6" },
@@ -432,6 +433,7 @@ exe-builder = [
 [package.metadata]
 requires-dist = [
     { name = "click", specifier = ">=8.1.7" },
+    { name = "platformdirs", specifier = ">=4.3.6" },
     { name = "pypdf2", specifier = ">=3.0.1" },
     { name = "pyperclip", specifier = ">=1.9.0" },
     { name = "pyqt6", specifier = ">=6.7.1" },
