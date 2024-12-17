@@ -44,11 +44,9 @@ class SwPayrollStrategy:
 
             open_file(Path(temp_dir))
 
-    @pyqtSlot()
     def configure(self, file_bo: FileBo):
         pass
 
-    @pyqtSlot()
     def get_action(self, action: str, file_bo: FileBo):
         action = getattr(self, action)
         action(file_bo)

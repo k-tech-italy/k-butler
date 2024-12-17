@@ -1,7 +1,6 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTextEdit, QPushButton, QGroupBox, QGridLayout
 
 from k_butler.strategies.clipboard.drawio import DrawioCreateTableParse
-import pyperclip
 
 
 class Clipboard(QWidget):
@@ -12,8 +11,6 @@ class Clipboard(QWidget):
         super().__init__(parent, *args)
         main_layout = QVBoxLayout()
         self.editor = QTextEdit()
-        #self.editor.setPlainText(pyperclip.paste())
-        #self.editor.setReadOnly(True)
 
         main_layout.addWidget(self.editor)
 

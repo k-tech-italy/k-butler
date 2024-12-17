@@ -2,6 +2,7 @@ from typing import List
 
 from PyQt6.QtWidgets import QLabel, QVBoxLayout, QWidget, QToolBox, QGridLayout, QGroupBox, QHBoxLayout, QPushButton
 
+from k_butler.components.common import KTStrategyAccordion
 from k_butler.filesbo import FileBo
 
 
@@ -20,6 +21,7 @@ class AnotherWindowBase(QWidget):
         self.files_bo = files_bo
         single_file = len(files_bo) == 1
         self.title_label = "Single file Page" if single_file else "Multiple files Page"
+        self.label = QLabel('')
         content = self.create_content_layout()
 
         top_layout = self.create_top_layout()
@@ -56,7 +58,7 @@ class AnotherWindowBase(QWidget):
         """
         component = QGroupBox('content')
         layout = QGridLayout()
-        strategy_toolbox = self.create_strategy_toolbox()
+        strategy_toolbox = KTStrategyAccordion(self.files_bo, self.update_action_detail)
         self.action_detail = self.create_action_detail()
 
         layout.addWidget(strategy_toolbox, 1, 1)
