@@ -51,6 +51,7 @@ dev = [
     "isort>=5.13.2",
     "bumpversion>=0.6.0",
     "pytest>=8.3.3",
+    "pytest-cov>=6.0.0",
 ]
 exe_builder = [
     "pyinstaller>=6.11.0",

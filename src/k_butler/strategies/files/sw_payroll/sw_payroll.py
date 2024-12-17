@@ -18,7 +18,7 @@ class SwPayrollStrategy:
         'split': 'docs/split.txt',
         'configure': 'Configure payroll',
     }
-    configurator = SwPayrollConfigurator()
+    configurator = SwPayrollConfigurator
 
     def match(self, file_bo: FileBo) -> bool:
         if not file_bo.name.endswith(".pdf"):
