@@ -58,7 +58,7 @@ class AnotherWindowBase(QWidget):
         """
         component = QGroupBox('content')
         layout = QGridLayout()
-        strategy_toolbox = GuiAccordion(self.files_bo, self.update_action_detail)
+        strategy_toolbox = GuiAccordion(files_bo=self.files_bo)
         self.action_detail = self.create_action_detail()
 
         layout.addWidget(strategy_toolbox, 1, 1)

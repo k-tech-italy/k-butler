@@ -17,7 +17,7 @@ class ConfigStorage:
             self.example = strategy.configurator.get_example_file()
 
     def _get_config_path(self):
-        '''FOR LOCAL TESTING use local path like this: /k-butler/.dc/example.yaml'''
+        """FOR LOCAL TESTING use local path like this: /k-butler/.dc/example.yaml"""
 
         return platformdirs.user_config_path(self.strategy_filename)
 

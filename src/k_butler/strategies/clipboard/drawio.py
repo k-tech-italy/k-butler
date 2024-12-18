@@ -1,7 +1,6 @@
-from PyQt6.QtCore import pyqtSlot
 import pyperclip
 
-from k_butler.components.common import create_error_modal
+from k_butler.components.common import GuiModal
 
 
 class DrawioCreateTableParse:
@@ -20,20 +19,18 @@ class DrawioCreateTableParse:
         self.start = 'CREATE TABLE '
         return text.upper().startswith(self.start)
 
-    @pyqtSlot()
     def parse(self, component):
         text = component.editor.toPlainText()
         match = self.match(text)
         if not match:
-            return create_error_modal(self.start, 'Copy a string that starts with:')
+            return GuiModal(self.start, 'Copy a string that starts with:')
         result = f'{text}_1'
         pyperclip.copy(result)
         component.editor.setPlainText(result)
 
-    @pyqtSlot()
     def paste(self, component):
         text = pyperclip.paste()
         match = self.match(text)
         if not match:
-            return create_error_modal(self.start, 'Copy a string that starts with:')
+            return GuiModal(self.start, 'Copy a string that starts with:')
         component.editor.setPlainText(text)

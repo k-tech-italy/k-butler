@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QGroupBox, QGridLayout, QPushButton
 
-from k_butler.components.common import GuiTextEdit, GuiAccordion, create_error_modal
+from k_butler.components.common import GuiTextEdit, GuiAccordion, GuiModal
 from k_butler.configuration import ConfigStorage
 from k_butler.strategies.base import Registry
 import ast
@@ -22,7 +22,7 @@ class ConfigTab(QWidget):
 
         action_layout = QGroupBox('Actions')
         layout = QGridLayout()
-        strategy_toolbox = GuiAccordion(self.update_action_detail, updateText=self.update_text, strategies=strategies)
+        strategy_toolbox = GuiAccordion(self.update_text, strategies=strategies)
 
         layout.addWidget(strategy_toolbox, 1, 1)
         layout.addWidget(save_config_button, 2, 2)
@@ -48,4 +48,4 @@ class ConfigTab(QWidget):
             self.editor.setText(str(updated_text))
 
         except Exception as e:
-            create_error_modal(str(e))
+            GuiModal(str(e))
