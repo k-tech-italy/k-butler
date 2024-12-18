@@ -1,13 +1,13 @@
 templates:
- subject: Busta paga {mese} {anno}
- body: |
- Ciao {nominativo},
- in allegato trovi la busta paga di {mese} {anno}
-
- Il presente messaggio è inviato automaticamente, per qualsiasi informazione non cliccare su "rispondi" ma scrivi a: hr@k-tech.it
-
- Buon lavoro,
- Ammnistrazione
+  subject: Busta paga {mese} {anno}
+  body: |
+   Ciao {nominativo},
+   in allegato trovi la busta paga di {mese} {anno}
+  
+   Il presente messaggio è inviato automaticamente, per qualsiasi informazione non cliccare su "rispondi" ma scrivi a: hr@k-tech.it
+  
+   Buon lavoro,
+   Ammnistrazione
 smtp:
  sender: K-Tech <k-tech@arubapec.it>
  user: k-tech@arubapec.it
@@ -22,8 +22,8 @@ folders:
  pdf_reader: C:\Program Files\Adobe\Acrobat DC\Acrobat\Acrobat.exe
 emails:
  BRNGNN00Z00X000X:
- email: g.bronzini@k-tech.it
- name: Giovanni Bronzini
+  email: g.bronzini@k-tech.it
+  name: Giovanni Bronzini
  CMPDVD00Z00X000X:
- email: d.campana@k-tech.it
- name: Davide Campana
+  email: d.campana@k-tech.it
+  name: Davide Campana
