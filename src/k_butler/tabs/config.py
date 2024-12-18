@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QGroupBox, QGridLayout, QPushButton
 
-from k_butler.components.common import GuiTextEdit, GuiAccordion
+from k_butler.components.common import GuiTextEdit, GuiAccordion, create_error_modal
 from k_butler.configuration import ConfigStorage
 from k_butler.strategies.base import Registry
 import ast
@@ -40,8 +40,12 @@ class ConfigTab(QWidget):
         self.editor.setText(text)
 
     def validate_dict(self, text):
+        config_storage = ConfigStorage(self.current_strategy)
         try:
             res = ast.literal_eval(text)
-            ConfigStorage(self.current_strategy).write(res)
+            config_storage.write(res)
+            updated_text = config_storage.read()
+            self.editor.setText(str(updated_text))
+
         except Exception as e:
-            self.editor.setText(e.__str__())
+            create_error_modal(str(e))

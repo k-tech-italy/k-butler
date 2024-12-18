@@ -1,7 +1,6 @@
 from PyQt6.QtWidgets import QMessageBox, QTextEdit, QToolBox, QGroupBox, QVBoxLayout, QPushButton, QHBoxLayout
 
 from k_butler.configuration import ConfigStorage
-from k_butler.strategies.base import Registry
 
 
 def create_error_modal(name, error_message='generic error'):
