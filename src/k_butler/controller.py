@@ -21,7 +21,7 @@ class Controller:
                 if not (StrategyKlass().match(f)):  # if matches the strategy will add itself to the list
                     # file_bo.handlers
                     files_bo.pop(files_bo.index(f))
-                    GuiModal(f.fullpath, 'Actions not found for:')
+                    GuiModal(f.fullpath, f'Actions not found for: {name}')
         if files_bo:
             self.windows.setdefault('test', AnotherWindowBase(files_bo)).show()
 

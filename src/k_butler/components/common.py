@@ -4,11 +4,17 @@ from k_butler.configuration import ConfigStorage
 
 
 class GuiModal(QMessageBox):
-    def __init__(self, message, second_message='', ):
+    def __init__(self, title: str, message: str = '', ):
+        """
+        Simple modal window for displaying a message.
+        """
         super().__init__()
-        self.setWindowTitle(message)
-        self.setText(f"{message} {second_message}")
+        self.setWindowTitle(title)
+        self.setText(message)
         self.setModal(True)
+        self._open_modal()
+
+    def _open_modal(self):
         self.exec()
 
 
@@ -23,14 +29,13 @@ class GuiTextEdit(QTextEdit):
         super().setPlainText(text)
 
 
-
-
 class GuiAccordion(QToolBox):
     def __init__(self, update_text=None, files_bo=None, strategies=None):
         """
         Creates a QToolBox widget populated with action buttons.
         Single File = each action button for each strategy
         Multiple Files = Group action for group strategy
+        Configuration strategies = Group action for config strategy
         """
         super().__init__()
 
@@ -45,12 +50,13 @@ class GuiAccordion(QToolBox):
                 for handler in file_bo.handlers:
                     self.addItem(self.create_buttons_actions(handler, file_bo), handler.name)
 
+    def _read_config(self, strategy):
+        storage = ConfigStorage(strategy.key)
+        res = storage.read()
+        if self.update_text is not None:
+            self.update_text(str(res), strategy.key)
+
     def create_buttons_config(self, strategy):
-        def read_config():
-            storage = ConfigStorage(strategy.key)
-            res = storage.read()
-            if self.update_text is not None:
-                self.update_text(str(res), strategy.key)
 
         configurator = strategy.configurator
         buttons_component = QGroupBox(configurator.name)
@@ -58,7 +64,7 @@ class GuiAccordion(QToolBox):
 
         button = QPushButton('Configuration')
         button.setDefault(True)
-        button.clicked.connect(lambda checked: read_config())
+        button.clicked.connect(lambda checked: self._read_config(strategy))
         button_layout.addWidget(button)
 
         button_layout.addStretch(1)
@@ -69,18 +75,13 @@ class GuiAccordion(QToolBox):
         return buttons_component
 
     def create_buttons_actions(self, strategy, file_bo):  # TODO manage multiple files
-        """
-        Creates a QToolBox widget populated with action buttons.
-        Single File = each action button for each strategy
-        Multiple Files = Group action for group strategy
-        """
         buttons_component = QGroupBox("Actions")
         button_layout = QVBoxLayout()
 
         for action in strategy.actions:
             button = QPushButton(action)
             button.setDefault(True)
-            button.clicked.connect( lambda checked, a=action, f=file_bo: strategy.get_action(a, file_bo))
+            button.clicked.connect(lambda checked, a=action, f=file_bo: strategy.get_action(a, file_bo))
             button_layout.addWidget(button)
 
         button_layout.addStretch(1)
@@ -89,4 +90,3 @@ class GuiAccordion(QToolBox):
         main_layout.addStretch()
 
         return buttons_component
-

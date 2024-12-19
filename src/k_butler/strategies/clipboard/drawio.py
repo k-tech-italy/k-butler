@@ -23,7 +23,7 @@ class DrawioCreateTableParse:
         text = component.editor.toPlainText()
         match = self.match(text)
         if not match:
-            return GuiModal(self.start, 'Copy a string that starts with:')
+            return GuiModal(self.start, f'Copy a string that starts with: {self.start}')
         result = f'{text}_1'
         pyperclip.copy(result)
         component.editor.setPlainText(result)
@@ -32,5 +32,5 @@ class DrawioCreateTableParse:
         text = pyperclip.paste()
         match = self.match(text)
         if not match:
-            return GuiModal(self.start, 'Copy a string that starts with:')
+            return GuiModal(self.start, f'Copy a string that starts with: {self.start}')
         component.editor.setPlainText(text)

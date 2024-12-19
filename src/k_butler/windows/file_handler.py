@@ -40,18 +40,6 @@ class AnotherWindowBase(QWidget):
         component.setLayout(layout)
         return component
 
-    def create_strategy_toolbox(self):
-        """
-        Creates a QToolBox widget populated with action buttons.
-        Single File = each action button for each strategy
-        Multiple Files = Group action for group strategy
-        """
-        component = QToolBox()  # TODO add group strategy
-        for f in self.files_bo:
-            for handler in f.handlers:
-                component.addItem(self.create_buttons_actions(handler), handler.name)
-            return component
-
     def create_content_layout(self):
         """
         Creates layout grid for components
@@ -67,30 +55,10 @@ class AnotherWindowBase(QWidget):
         component.setLayout(layout)
         return component
 
-    def create_buttons_actions(self, strategy):
-
-        buttons_component = QGroupBox("Actions")
-        button_layout = QVBoxLayout()
-
-        for action in strategy.actions.keys():
-            button = QPushButton(action)
-            button.setDefault(True)
-            # button.clicked.connect(lambda checked, a=action, f=self.files_bo[0]: strategy.get_action(a, f))
-            button.clicked.connect(lambda checked, a=action: self.update_action_detail(a))
-            button_layout.addWidget(button)
-
-        button_layout.addStretch(1)
-        main_layout = QHBoxLayout(buttons_component)
-        main_layout.addLayout(button_layout)
-        main_layout.addStretch()
-
-        return buttons_component
-
     def update_action_detail(self, action):
         self.label.setText(f'{action}')
 
     def create_action_detail(self):
-
         result = QGroupBox("Action details")
         self.label = QLabel("Select an action")
 
@@ -101,7 +69,7 @@ class AnotherWindowBase(QWidget):
 
         button = QPushButton(self.label)
         button.setDefault(True)
-        #button.clicked.connect(lambda checked, a=self.label, f=self.files_bo[0]: strategy.get_action(a, f))
+        # button.clicked.connect(lambda checked, a=self.label, f=self.files_bo[0]: strategy.get_action(a, f))
         v_layout.addWidget(button)
 
         h_layout.addLayout(v_layout)

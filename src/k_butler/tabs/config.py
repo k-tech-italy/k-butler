@@ -48,4 +48,4 @@ class ConfigTab(QWidget):
             self.editor.setText(str(updated_text))
 
         except Exception as e:
-            GuiModal(str(e))
+            GuiModal('error', str(e))
