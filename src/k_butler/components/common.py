@@ -30,17 +30,18 @@ class GuiTextEdit(QTextEdit):
 
 
 class GuiAccordion(QToolBox):
-    def __init__(self, update_text=None, files_bo=None, strategies=None):
+    def __init__(self, update_callback=None, files_bo=None, strategies=None, is_config=False, ): #TODO Generalize input parameters
         """
         Creates a QToolBox widget populated with action buttons.
         Single File = each action button for each strategy
         Multiple Files = Group action for group strategy
         Configuration strategies = Group action for config strategy
+        common strategy without files_bo TODO
         """
         super().__init__()
 
-        self.update_text = update_text
-        if strategies is not None and files_bo is None:
+        self.update_text = update_callback
+        if is_config:
             for strategy in strategies:
                 self.addItem(self.create_buttons_config(strategies[strategy]), strategy)
 

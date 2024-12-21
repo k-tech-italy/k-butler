@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTextEdit, QPushButton, QGroupBox, QGridLayout
 
+from k_butler.components.common import GuiAccordion
 from k_butler.strategies.clipboard.drawio import DrawioCreateTableParse
 
 
@@ -13,17 +14,14 @@ class Clipboard(QWidget):
         self.editor = QTextEdit()
 
         main_layout.addWidget(self.editor)
+        strategies = {self.strategy.key: self.strategy}
 
         button_layout = QGroupBox('Actions')
         layout = QGridLayout()
+        strategy_toolbox = GuiAccordion(self.editor.setText, strategies=strategies)
 
-        button = QPushButton('Parse')
-        layout.addWidget(button)
-        button.clicked.connect(lambda: DrawioCreateTableParse().parse(component=self))
-
-        button = QPushButton('Paste from clipboard')
-        layout.addWidget(button)
-        button.clicked.connect(lambda: DrawioCreateTableParse().paste(component=self))
+        layout.addWidget(strategy_toolbox, 1, 1)
+        layout.addWidget(self.editor, 1, 2)
 
         button_layout.setLayout(layout)
         main_layout.addWidget(button_layout)

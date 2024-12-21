@@ -22,7 +22,7 @@ class ConfigTab(QWidget):
 
         action_layout = QGroupBox('Actions')
         layout = QGridLayout()
-        strategy_toolbox = GuiAccordion(self.update_text, strategies=strategies)
+        strategy_toolbox = GuiAccordion(self.update_text, strategies=strategies, is_config=True)
 
         layout.addWidget(strategy_toolbox, 1, 1)
         layout.addWidget(save_config_button, 2, 2)

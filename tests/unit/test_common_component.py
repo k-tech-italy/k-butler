@@ -1,48 +1,6 @@
 from unittest.mock import Mock
 
-import pytest
-from PyQt6.QtWidgets import QGroupBox, QPushButton, QTextEdit
-
-
-@pytest.fixture
-def mock_file_bo(mock_strategy):
-    class MockFileBo:
-        def __init__(self, file_path):
-            self.file_path = file_path
-            self.handlers = [mock_strategy]
-            self.name = 'Mock file bo'
-
-    yield MockFileBo
-
-
-@pytest.fixture
-def mock_configurator():
-    class MockConfigurator:
-        name = 'Mock configurator'
-        key = 'mock-configurator'
-
-        def get_config(self, action):
-            return {'test': 'test'}
-
-    yield MockConfigurator
-
-
-@pytest.fixture
-def mock_strategy(mock_configurator):
-    class MockStrategy:
-        name = 'Mock strategy'
-        key = 'mock'
-        actions = {'test action': 'test action'}
-        configurator = mock_configurator
-
-        def match(self, file_bo):
-            return True
-
-        def get_action(self, action, file_bo):
-            assert action == 'test'
-            assert file_bo is not None
-
-    yield MockStrategy
+from PyQt6.QtWidgets import QGroupBox, QPushButton
 
 
 def test_text_edit(qtbot):
@@ -73,7 +31,7 @@ def test_accordion_config_strategy(qtbot, mock_strategy, monkeypatch):
     monkeypatch.setattr('k_butler.components.common.GuiAccordion._read_config', mock_read_config)
 
     strategies = {mock_strategy.key: mock_strategy}
-    accordion_widget = GuiAccordion(strategies=strategies)
+    accordion_widget = GuiAccordion(strategies=strategies, is_config=True)
     qtbot.addWidget(accordion_widget)
     accordion_widget.show()
 
@@ -102,5 +60,3 @@ def test_accordion_file_bo(qtbot, mock_file_bo, monkeypatch):
 
     action_button = file_container.findChild(QPushButton)
     assert action_button.text() == 'test action'
-
-
