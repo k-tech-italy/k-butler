@@ -101,7 +101,8 @@ class ActionDetail(QGroupBox):
         self.action_button.setVisible(True)
         self.action_button.setDefault(True)
 
-        description = Path(f'strategies/files/sw_payroll/docs/{action}.txt').read_text() if action else ''
+        description = strategy.get_action_description(action).read_text()
+
         self.description.setPlainText(description)
 
     def _get_action(self):

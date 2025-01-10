@@ -1,6 +1,7 @@
 import inspect
 from pathlib import Path
 from typing import Any, Dict
+from inspect import getmodule
 
 
 class Registry:
@@ -41,3 +42,15 @@ class StrategyBaseConfigurator:
         while cursor.name != 'configuration':
             cursor = cursor.parent
         return cursor / 'example.yaml'
+
+
+class StrategyBase:
+    actions = {}
+
+    @classmethod
+    def get_doc_root(cls) -> str:
+        return Path(getmodule(cls).__file__).parent
+
+    @classmethod
+    def get_action_description(cls, action: str) -> str:
+        return cls.get_doc_root() / cls.actions[action]

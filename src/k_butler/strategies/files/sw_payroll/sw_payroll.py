@@ -2,16 +2,16 @@ import tempfile
 from pathlib import Path
 
 from PyPDF2 import PdfReader, PdfWriter
-from PyQt6.QtCore import pyqtSlot
 
 from k_butler.filesbo import FileBo
 from k_butler.strategies.base import register
+from k_butler.strategies.files.base import FileStrategyBase
 from k_butler.strategies.files.sw_payroll.configuration import SwPayrollConfigurator
 from k_butler.strategies.utils import open_file
 
 
 @register
-class SwPayrollStrategy:
+class SwPayrollStrategy(FileStrategyBase):
     name = 'Singlewave Payroll processor'
     key = 'sw_payroll'
     description = 'Single wave payroll processor strategy.'
