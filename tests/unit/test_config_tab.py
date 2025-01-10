@@ -1,6 +1,8 @@
 import sys
+from pathlib import Path
 from unittest.mock import Mock
 import pytest
+import yaml
 from PyQt6.QtWidgets import QApplication, QTabWidget
 from contextlib import nullcontext as does_not_raise
 
@@ -23,8 +25,9 @@ def test_editor_initialized_with_text():
         ), id='failed')
     ]
 )
-def test_validate_config(monkeypatch, text, exception):
+def test_validate_config(monkeypatch, text, exception, mock_strategy):
     config = ConfigTab(main)
+    config.current_strategy = mock_strategy
     mock_write = Mock()
     error_modal = Mock()
     monkeypatch.setattr('k_butler.configuration.ConfigStorage.write', mock_write)
@@ -39,14 +42,12 @@ def test_validate_config(monkeypatch, text, exception):
 
 def test_update_text(monkeypatch, mock_strategy):
     config = ConfigTab(main)
-    text={"pippo": "pluto"}
+    text = {"pippo": "pluto"}
+    expect = yaml.dump(text, default_flow_style=False)
     mock_read = Mock(return_value=[text, False])
     monkeypatch.setattr('k_butler.configuration.ConfigStorage.read', mock_read)
 
     config.update_text(strategy=mock_strategy)
     assert mock_read.call_count == 1
 
-    assert config.editor.toPlainText() == str(text)
-
-
-
+    assert config.editor.toPlainText() == expect

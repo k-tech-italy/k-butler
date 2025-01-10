@@ -42,5 +42,6 @@ class ConfigStorage:
             return yaml.safe_load(config_stream), is_example
 
     def write(self, config: dict):
-        with self._get_config_file()[0].open('w') as config_stream:
+        config_yaml, _ = self._get_config_file()
+        with config_yaml.open('w') as config_stream:
             config_stream.write(yaml.dump(config, default_flow_style=False))
