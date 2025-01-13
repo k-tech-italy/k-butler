@@ -21,8 +21,7 @@ class ConfigStorage:
         """FOR LOCAL TESTING use local path like this:
             '/Users/name/Ktech/folder/k-butler/.dc/example.yaml'
         """
-        path = Path('k_butler') / self.strategy_filename
-        return platformdirs.user_config_path(path)
+        return platformdirs.user_config_path(self.strategy_filename)
 
     def _get_config_file(self) -> Tuple[Path, bool]:
         config_file = self._get_config_path()

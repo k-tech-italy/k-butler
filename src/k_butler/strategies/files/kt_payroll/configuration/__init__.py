@@ -7,9 +7,9 @@ def validate_config(*args, **kwargs) -> bool:
     return True
 
 
-class SwPayrollConfigurator(StrategyBaseConfigurator):
-    name = 'Singlewave Payroll configurator'
-    key = 'sw_payroll'
+class KTechPayrollConfigurator(StrategyBaseConfigurator):
+    name = 'K-Tech Payroll configurator'
+    key = 'kt_payroll'
     actions = {
         'configure': 'configure payroll',
     }

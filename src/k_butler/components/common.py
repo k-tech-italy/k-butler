@@ -28,19 +28,18 @@ class GuiTextEdit(QTextEdit):
 
 
 class GuiAccordionItem(QGroupBox):
-    def __init__(self,  strategy, on_click, is_config=False):
+    def __init__(self,  strategy, on_click, ):
         super().__init__()
-        actions = strategy.configurator.actions if is_config else strategy.actions
+        main_layout = QHBoxLayout(self)
 
         button_layout = QVBoxLayout()
-        for action in actions:
+        for action in strategy.actions:
             button = QPushButton(action)
             button.setDefault(True)
             button.clicked.connect(lambda checked, a=action: on_click(action=a, strategy=strategy))
             button_layout.addWidget(button)
 
         button_layout.addStretch(1)
-        main_layout = QHBoxLayout(self)
         main_layout.addLayout(button_layout)
         main_layout.addStretch()
 
@@ -51,7 +50,7 @@ class GuiAccordion(QToolBox):
     Each item is a group of buttons related to a specific strategy.
     """
 
-    def __init__(self, items: dict, on_click_button,  is_config: bool = False, *args, **kwargs):
+    def __init__(self, items: dict, on_click_button, *args, **kwargs):
         """
         Args:
             items (dict): A dictionary of items where each key is the name of the item and
@@ -59,4 +58,4 @@ class GuiAccordion(QToolBox):
         """
         super().__init__()
         for item in items:
-            self.addItem(GuiAccordionItem(items[item], on_click_button, is_config), item)
+            self.addItem(GuiAccordionItem(items[item], on_click_button), item)

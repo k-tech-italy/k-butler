@@ -1,0 +1,3 @@
+Description:
+This function takes a pdf file and splits it into multiple files based on a specified start and end page number.
+The output files are named as the input file name with the page range appended to it.

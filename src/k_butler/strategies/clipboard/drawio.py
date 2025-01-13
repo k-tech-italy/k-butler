@@ -1,12 +1,14 @@
 import pyperclip
 
+from k_butler.strategies.clipboard.base import ClipboardStrategyBase
+
 
 class DrawioCreateTableConfigurator:
     name = 'Drawio SQL Create Table parser for ERD'
     pass
 
 
-class DrawioCreateTableParse:
+class DrawioCreateTableParse(ClipboardStrategyBase):
     name = 'Drawio SQL Create Table parser for ERD'
     key = 'drawio_parse'
     description = ''

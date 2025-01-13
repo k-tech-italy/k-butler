@@ -4,6 +4,7 @@ from typing import Any, Dict
 from inspect import getmodule
 
 
+
 class Registry:
     _strategies = {}
 
@@ -12,7 +13,15 @@ class Registry:
         return self._strategies
 
     def load(self):
+<<<<<<< Updated upstream
         from k_butler.strategies.files.sw_payroll.sw_payroll import SwPayrollStrategy as _
+        from k_butler.strategies.files.kt_payroll.kt_payroll import KtPayrollStrategy as _
+=======
+        from . import sw_payroll as _
+        self._strategies = {
+            _.SwPayrollProcessor.name: _.SwPayrollProcessor
+        }
+>>>>>>> Stashed changes
 
 
 def register(klass):

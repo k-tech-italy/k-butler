@@ -1,18 +1,16 @@
 import yaml
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QGroupBox, QGridLayout, QPushButton
-from yaml._yaml import ScannerError
+from PyQt6.QtCore import QMargins
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QGridLayout, QTabWidget, QPushButton, QGroupBox
 
 from k_butler.components.common import GuiTextEdit, GuiModal, GuiAccordion
-from k_butler.configuration import ConfigStorage
 from k_butler.strategies.base import Registry
-import ast
 
 
-def create_accordion_item():
+def create_accordion_item(category: str = None):
     accordion_item = {}
     strategies = Registry().strategies
-
-    for strategy in strategies:
+    filtered_strategies = {k: v for k, v in strategies.items() if v.category == category} if category else strategies
+    for strategy in filtered_strategies:
         if strategies[strategy].configurator is not None:
             title = strategies[strategy].configurator.name
             accordion_item[title] = strategies[strategy]
@@ -27,55 +25,115 @@ class ConfigTab(QWidget):
 
     def __init__(self, parent=..., *args):
         super().__init__(parent, *args)
-        main_layout = QVBoxLayout()
+        main_layout = QGridLayout(self)
+        self.setLayout(main_layout)
+
         self.editor = GuiTextEdit()
         self.editor.setReadOnly(True)
         self.editor.setPlaceholderText('Select one strategy to configure')
         self.current_strategy = None
 
-        self.config_storage = ConfigStorage(strategy_key=self.current_strategy)
+        self.tab = QTabWidget(self)
 
+        """files strategy tab"""
+        content = TabContent(category='files')
+        self.tab.addTab(content, 'Files')
+
+        """clipboard strategy tab"""
+        content = TabContent(category='clipboard')
+        self.tab.addTab(content, 'Clipboard')
+
+        """config strategy tab"""
+        config_strategy_tab = QWidget()
+        config_strategy_layout = QVBoxLayout()
+        config_strategy_layout.addWidget(self.editor)
+        config_strategy_tab.setLayout(config_strategy_layout)
+        self.tab.addTab(config_strategy_tab, 'Config')
+
+        main_layout.addWidget(self.tab, 0, 0, 2, 1)
+
+
+class TabContent(QWidget):
+    def __init__(self, category: str, *args, **kwargs):
+        """Initializes the TabContent widget."""
+        super().__init__(*args, **kwargs)
+        self.current_strategy = None
+        self.setLayout(QVBoxLayout(self))
+        layout = self.layout()
+
+        accordion_items = create_accordion_item(category)
+        self.strategy = None
+
+        """config editor"""
+        self.config_editor = GuiTextEdit()
+        self.config_editor.setReadOnly(True)
+        self.config_editor.setPlaceholderText('Select a strategy to configure')
+
+        """save button"""
         self.save_config_button = QPushButton('Save Config')
         self.save_config_button.setDefault(True)
         self.save_config_button.setDisabled(True)
-        self.save_config_button.setToolTip('Select one strategy to configure')
-        self.save_config_button.clicked.connect(lambda: self.validate_dict(self.editor.toPlainText()))
+        self.save_config_button.setToolTip('Select a strategy to configure')
+        self.save_config_button.clicked.connect(self.save_config)
 
-        action_layout = QGroupBox('Actions')
-        layout = QGridLayout()
-        items = create_accordion_item()
+        if len(accordion_items) == 0:
+            self.config_editor.setPlaceholderText('No strategies to configure')
+            self.save_config_button.setVisible(False)
+            self.config_editor.setStyleSheet("background-color: transparent;")
 
-        strategy_toolbox = GuiAccordion(items, self.update_text, is_config=True)
+        actions_group = QGroupBox()
+        #actions_group.setStyleSheet("border: 0px;")
+        actions_layout = QGridLayout(actions_group)
+        actions_layout.setContentsMargins(QMargins(0, 0, 0, 0))
+        self.strategy_accordion = ListButton(accordion_items, self.update_config)
 
-        layout.addWidget(strategy_toolbox, 1, 1)
-        layout.addWidget(self.save_config_button, 2, 2)
-        layout.addWidget(self.editor, 1, 2)
+        actions_layout.addWidget(self.strategy_accordion, 0, 0)
+        actions_layout.addWidget(self.save_config_button, 1, 1)
+        actions_layout.addWidget(self.config_editor, 0, 1)
 
-        action_layout.setLayout(layout)
-        main_layout.addWidget(action_layout)
-        self.setLayout(main_layout)
+        layout.addWidget(actions_group)
 
-    def update_text(self, *args, **kwargs):
+    def update_config(self, *args, **kwargs):
 
         self.save_config_button.setDisabled(False)
         self.save_config_button.setToolTip('Save')
-        self.editor.setReadOnly(False)
+        self.config_editor.setReadOnly(False)
 
         strategy = kwargs['strategy']
         self.current_strategy = strategy
-        config, is_example = self.config_storage.read()
-        if is_example:
+        config, is_example = strategy.configurator.configure()
+        if not config or is_example:
             GuiModal('warning', 'There is no Config, you are using the autogenerated one')
         parse_data = yaml.dump(config, default_flow_style=False)
-        self.editor.setText(parse_data)
+        self.config_editor.setText(parse_data)
 
-    def validate_dict(self, text):
+    def save_config(self):
+        text = self.config_editor.toPlainText()
         if self.current_strategy:
             try:
                 validated_yaml = yaml.safe_load(text)
-                self.config_storage.write(validated_yaml)
-                self.update_text(strategy=self.current_strategy)
+                self.current_strategy.configurator.write_config(validated_yaml)
+                self.update_config(strategy=self.current_strategy)
+                GuiModal('success', 'Config saved')
             except Exception as e:
                 GuiModal('error', str(e))
         else:
             GuiModal('warning', 'Select one strategy to configure')
+
+
+class ListButton(QGroupBox):
+    def __init__(self, items: dict, on_click_button, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.print = None
+        layout = QGridLayout()
+        for item in items:
+            button = QPushButton(item)
+            button.setDefault(False)
+            button.clicked.connect(lambda checked, a=item: on_click_button(strategy=items[a]))
+            layout.addWidget(button)
+
+        self.setLayout(layout)
+
+
+
+
