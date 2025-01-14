@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QWidget, QGridLayout, QTabWidget
 
 from k_butler.tabs.clipboard import Clipboard
-from k_butler.tabs.config import ConfigTab
+from k_butler.tabs.config.config import ConfigTab
 from k_butler.tabs.files import FileSelect
 
 

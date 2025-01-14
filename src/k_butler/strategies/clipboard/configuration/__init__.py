@@ -2,12 +2,11 @@ from k_butler.configuration import ConfigStorage
 from k_butler.configuration.base_configurator import StrategyBaseConfigurator
 
 
-class KTechPayrollConfigurator(StrategyBaseConfigurator):
-    name = 'K-Tech Payroll configurator'
-    key = 'kt_payroll'
-    actions = {
-        'configure': 'configure payroll',
-    }
+class DrawioCreateTableConfigurator(StrategyBaseConfigurator):
+    name = 'Drawio SQL Create Table parser for ERD'
+    key = 'drawio_parse'
+
+
 
     @classmethod
     def get_storage(cls):

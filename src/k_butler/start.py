@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget
 
 from k_butler.controller import controller
 from k_butler import __version__
-from k_butler.strategies.base import Registry
+from k_butler.strategies import Registry
 from k_butler.widgets.tabs_widget import TabsWidget
 
 

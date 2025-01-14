@@ -57,5 +57,5 @@ def mock_strategy(mock_configurator):
 
 @pytest.fixture(scope="module", autouse=True)
 def load_registry():
-    from k_butler.strategies.base import Registry
+    from k_butler.strategies import Registry
     Registry().load()

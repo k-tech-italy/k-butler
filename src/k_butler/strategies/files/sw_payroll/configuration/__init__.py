@@ -1,5 +1,5 @@
 from k_butler.configuration import ConfigStorage
-from k_butler.strategies.base import StrategyBaseConfigurator
+from k_butler.configuration.base_configurator import StrategyBaseConfigurator
 
 
 def validate_config(*args, **kwargs) -> bool:
@@ -27,6 +27,10 @@ class SwPayrollConfigurator(StrategyBaseConfigurator):
         storage = cls.get_storage()
         if validate_config(config):
             storage.write(config)
+
+    @classmethod
+    def exist(cls):
+        return cls.get_storage().exist()
 
 
 

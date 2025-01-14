@@ -4,7 +4,7 @@ from typing import Tuple
 import platformdirs
 import yaml
 
-from k_butler.strategies.base import Registry
+from k_butler.strategies import Registry
 
 
 class ConfigStorage:
@@ -35,6 +35,9 @@ class ConfigStorage:
             is_example = True
 
         return config_file, is_example
+
+    def exist(self) -> bool:
+        return self._get_config_file()[0].exists()
 
     def read(self) -> Tuple[dict, bool]:
         config, is_example = self._get_config_file()

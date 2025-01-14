@@ -1,12 +1,10 @@
 from typing import List
-from pathlib import Path
 
-from PyQt6.QtGui import QTextDocument, QColor
 from PyQt6.QtWidgets import QLabel, QVBoxLayout, QWidget, QGridLayout, QGroupBox, QHBoxLayout, QPushButton, QTextEdit
 
 from k_butler.components.common import GuiAccordion
 from k_butler.filesbo import FileBo
-from k_butler.tabs.config import ConfigEditor
+from k_butler.tabs.config.components.components import ConfigEditor
 
 
 class AnotherWindowBase(QWidget):
@@ -23,7 +21,7 @@ class AnotherWindowBase(QWidget):
         self.setMinimumWidth(600)
         self.files_bo = files_bo
         self.is_single_file = len(files_bo) == 1
-        self.title_label = "Single file Page" if self.is_single_file else "Multiple files Page"
+        self.title_label = "Single file" if self.is_single_file else "Multiple files"
         self.label = QLabel('')
 
         items = self.create_accordion_item()
@@ -68,12 +66,10 @@ class ActionDetail(QGroupBox):
         """
         super().__init__()
 
+        self.action_button = None
+        self.description = QTextEdit('')
         self.current_action = None
         self.current_strategy = None
-        self.is_config = self.current_action == 'configure'
-        self.description = QTextEdit('')
-        self.description.setReadOnly(True)
-        self.description.setStyleSheet("background-color: transparent;")
 
         self.files_bo = files_bo
         self.setMaximumWidth(300)
@@ -82,8 +78,9 @@ class ActionDetail(QGroupBox):
         h_layout = QHBoxLayout()
         v_layout_detail = QVBoxLayout()
 
-        detail = self.create_detail_widget()
-        v_layout_detail.addWidget(detail)
+        self.detail = QWidget()
+        self.detail.setLayout(QVBoxLayout())
+        v_layout_detail.addWidget(self.detail)
 
         v_layout_detail.addStretch(1)
         h_layout.addLayout(v_layout_detail)
@@ -92,30 +89,47 @@ class ActionDetail(QGroupBox):
         self.setLayout(h_layout)
 
     def create_detail_widget(self):
-        component = QVBoxLayout()
+        """Create a detail widget for the given action."""
         if self.current_action == 'configure':
-            self.config_editor = ConfigEditor(strategy=self.current_strategy)
-            component.addWidget(self.config_editor)
+            self._clear_detail_widget()
+            config_editor = ConfigEditor(strategy=self.current_strategy)
+            self.detail.layout().addWidget(config_editor)
         else:
+            self._clear_detail_widget()
+            container = QWidget()
+            container.setLayout(QVBoxLayout())
+
             self.action_button = QPushButton()
-            self.action_button.setVisible(False)
             self.action_button.clicked.connect(self._get_action)
 
-            component.addWidget(self.description)
-            component.addWidget(self.action_button)
+            self.description.setReadOnly(True)
+            self.description.setStyleSheet("background-color: transparent;")
+            container.layout().addWidget(self.description)
+            container.layout().addWidget(self.action_button)
 
+            self.detail.layout().addWidget(container)
+
+    def _clear_detail_widget(self):
+        """Remove all widgets from the detail widget."""
+        while self.detail.layout().count():
+            child = self.detail.layout().takeAt(0)
+            if child.widget():
+                child.widget().deleteLater()
+        self.action_button = None
+        self.description = QTextEdit('')
 
     def change_action(self, action: str, strategy):  # TODO Manage n files
 
         self.current_strategy = strategy
         self.current_action = action
 
-        self.action_button.setText(action)
-        self.action_button.setVisible(True)
-        self.action_button.setDefault(True)
-
-        description = strategy.get_action_description(action).read_text()
-        self.description.setPlainText(description)
+        self.create_detail_widget()
+        if action != 'configure':
+            self.action_button.setText(action)
+            self.action_button.setVisible(True)
+            self.action_button.setDefault(True)
+            description = strategy.get_action_description(action).read_text()
+            self.description.setPlainText(description)
 
     def _get_action(self):
         self.current_strategy.get_action(action=self.current_action, file_bo=self.files_bo[0])

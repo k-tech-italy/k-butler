@@ -1,7 +1,7 @@
 from typing import Dict, List
 
 from k_butler.filesbo import FileBo
-from k_butler.strategies.base import Registry
+from k_butler.strategies import Registry
 from k_butler.windows.file_handler import AnotherWindowBase
 from k_butler.components.common import GuiModal
 
@@ -21,7 +21,7 @@ class Controller:
                 if not (StrategyKlass().match(f)):  # if matches the strategy will add itself to the list
                     # file_bo.handlers
                     files_bo.pop(files_bo.index(f))
-                    GuiModal(str(f.fullpath), f'Actions not found for: {f.name}')
+                    GuiModal(str(f.fullpath), f'No strategy configured for {f.name}, please configure it in config tab.').show()
         if files_bo:
             self.windows.setdefault('test', AnotherWindowBase(files_bo)).show()
 

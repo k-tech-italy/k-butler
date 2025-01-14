@@ -2,11 +2,14 @@ import tempfile
 from pathlib import Path
 
 from PyPDF2 import PdfReader, PdfWriter
+from pydantic_core._pydantic_core import ValidationError
 
+from k_butler.components.common import GuiModal
 from k_butler.filesbo import FileBo
-from k_butler.strategies.base import register
+from k_butler.strategies import register
 from k_butler.strategies.files.base import FileStrategyBase
 from k_butler.strategies.files.sw_payroll.configuration import SwPayrollConfigurator
+from k_butler.strategies.files.sw_payroll.validator import SwPayrollValidator
 from k_butler.strategies.utils import open_file
 
 
@@ -20,13 +23,19 @@ class SwPayrollStrategy(FileStrategyBase):
         'configure': 'docs/configure.txt',
     }
     configurator = SwPayrollConfigurator
+    validator = SwPayrollValidator
 
     def match(self, file_bo: FileBo) -> bool:
-        if not file_bo.name.endswith(".pdf"):
-            return False
-        else:
+        """Check if a file matches this strategy."""
+        if self.configurator.exist():
+            config, _ = self.configurator.configure()
+            try:
+                self.validator(**config)
+            except ValidationError:
+                return False
             file_bo.add_handler(self)
             return True
+
 
     def split(self, file_bo: FileBo):
         """Split a PDF file into multiple PDFs, one per page."""
