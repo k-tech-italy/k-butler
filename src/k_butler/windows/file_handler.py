@@ -6,6 +6,7 @@ from PyQt6.QtWidgets import QLabel, QVBoxLayout, QWidget, QGridLayout, QGroupBox
 
 from k_butler.components.common import GuiAccordion
 from k_butler.filesbo import FileBo
+from k_butler.tabs.config import ConfigEditor
 
 
 class AnotherWindowBase(QWidget):
@@ -61,7 +62,7 @@ class AnotherWindowBase(QWidget):
 
 
 class ActionDetail(QGroupBox):
-    def __init__(self, action: str = None, files_bo: List[FileBo] = None):
+    def __init__(self, files_bo: List[FileBo] = None):
         """
         Action detail widget showing the title of the action and a button to trigger it.
         """
@@ -69,6 +70,7 @@ class ActionDetail(QGroupBox):
 
         self.current_action = None
         self.current_strategy = None
+        self.is_config = self.current_action == 'configure'
         self.description = QTextEdit('')
         self.description.setReadOnly(True)
         self.description.setStyleSheet("background-color: transparent;")
@@ -77,20 +79,31 @@ class ActionDetail(QGroupBox):
         self.setMaximumWidth(300)
         self.setMinimumWidth(300)
 
-        self.action_button = QPushButton()
-        self.action_button.setVisible(False)
-        self.action_button.clicked.connect(self._get_action)
-
         h_layout = QHBoxLayout()
         v_layout_detail = QVBoxLayout()
-        v_layout_detail.addWidget(self.description)
-        v_layout_detail.addWidget(self.action_button)
-        v_layout_detail.addStretch(1)
 
+        detail = self.create_detail_widget()
+        v_layout_detail.addWidget(detail)
+
+        v_layout_detail.addStretch(1)
         h_layout.addLayout(v_layout_detail)
         h_layout.addStretch()
 
         self.setLayout(h_layout)
+
+    def create_detail_widget(self):
+        component = QVBoxLayout()
+        if self.current_action == 'configure':
+            self.config_editor = ConfigEditor(strategy=self.current_strategy)
+            component.addWidget(self.config_editor)
+        else:
+            self.action_button = QPushButton()
+            self.action_button.setVisible(False)
+            self.action_button.clicked.connect(self._get_action)
+
+            component.addWidget(self.description)
+            component.addWidget(self.action_button)
+
 
     def change_action(self, action: str, strategy):  # TODO Manage n files
 
@@ -102,7 +115,6 @@ class ActionDetail(QGroupBox):
         self.action_button.setDefault(True)
 
         description = strategy.get_action_description(action).read_text()
-
         self.description.setPlainText(description)
 
     def _get_action(self):

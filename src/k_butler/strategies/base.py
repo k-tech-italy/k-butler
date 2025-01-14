@@ -4,7 +4,6 @@ from typing import Any, Dict
 from inspect import getmodule
 
 
-
 class Registry:
     _strategies = {}
 
@@ -13,15 +12,8 @@ class Registry:
         return self._strategies
 
     def load(self):
-<<<<<<< Updated upstream
         from k_butler.strategies.files.sw_payroll.sw_payroll import SwPayrollStrategy as _
         from k_butler.strategies.files.kt_payroll.kt_payroll import KtPayrollStrategy as _
-=======
-        from . import sw_payroll as _
-        self._strategies = {
-            _.SwPayrollProcessor.name: _.SwPayrollProcessor
-        }
->>>>>>> Stashed changes
 
 
 def register(klass):
@@ -37,12 +29,10 @@ def register(klass):
 class StrategyBaseConfigurator:
     page = None
 
-
     @classmethod
     def get_config_filename(cls) -> str:
         strategy_type = Path(cls.__module__).suffixes[1][1:]
         return f'{strategy_type}/{cls.__name__.lower()}.yaml'
-
 
     @classmethod
     def get_example_file(cls) -> Path:
