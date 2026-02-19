@@ -18,10 +18,14 @@ class Controller:
         """If a matching strategy is found it will create a window, add it to windows dict, and return True."""
         for name, StrategyKlass in Registry().strategies.items():  # TODO FIX LOAD METHOD FOR REGISTRY
             for f in files_bo:
-                if not (StrategyKlass().match(f)):  # if matches the strategy will add itself to the list
-                    # file_bo.handlers
-                    files_bo.pop(files_bo.index(f))
-                    GuiModal(str(f.fullpath), f'No strategy configured for {f.name}, please configure it in config tab.').show()
+                try:
+                    if not (StrategyKlass().match(f)):  # if matches the strategy will add itself to the list
+                        # file_bo.handlers
+                        files_bo.pop(files_bo.index(f))
+                        GuiModal(str(f.fullpath), f'No strategy configured for {f.name}, please configure it in config tab.').show()
+                except Exception as e:
+                    # TODO: handle exception
+                    GuiModal('Error', f'{e}').show()
         if files_bo:
             self.windows.setdefault('test', AnotherWindowBase(files_bo)).show()
 
