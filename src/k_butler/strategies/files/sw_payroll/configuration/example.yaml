@@ -22,8 +22,11 @@ folders:
  pdf_reader: C:\Program Files\Adobe\Acrobat DC\Acrobat\Acrobat.exe
 emails:
  BRNGNN00Z00X000X:
-  email: g.bronzini@k-tech.it
+  email: g.bronzini@example.com
   name: Giovanni Bronzini
  CMPDVD00Z00X000X:
-  email: d.campana@k-tech.it
+  email: d.campana@example.com
   name: Davide Campana
+ PPRPLN72A06H501J:
+  email: p.paperino@example.com
+  name: Paolino Paperino
