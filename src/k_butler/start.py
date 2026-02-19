@@ -137,8 +137,12 @@ class Main(QMainWindow):
     #         # df.to_csv(output, index=False)
 
 
-if __name__ == "__main__":
+def main():
     app = QApplication([])
     main_gui = Main()
     main_gui.show()
     sys.exit(app.exec())
+
+
+if __name__ == "__main__":
+    main()

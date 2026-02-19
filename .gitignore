@@ -8,3 +8,4 @@
 !.*.example
 !.python-version
 !tests/.coveragerc
+src/k_butler/version.py
