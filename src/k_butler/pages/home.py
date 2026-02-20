@@ -9,11 +9,11 @@ class HomePage():
         vLayout = QVBoxLayout()
         hLayout = QHBoxLayout()
 
-
         hLayout.addWidget(QtWidgets.QLabel(mainwindow))
         self.loadBtn = QtWidgets.QPushButton("Select File(s)", self)
         hLayout.addWidget(self.loadBtn)
         vLayout.addLayout(hLayout)
+
 
         # self.filesTv = QtWidgets.QTableView(self)
         # vLayout.addWidget(self.filesTv)

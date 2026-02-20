@@ -1,26 +1,20 @@
-from typing import Any, Dict
+from pathlib import Path
+from inspect import getmodule
+
+from k_butler.configuration.base_configurator import StrategyBaseConfigurator
+from k_butler.strategies.base_validator import StrategyBaseValidator
 
 
-class Registry:
-    _strategies = {}
+class StrategyBase:
+    """global base class for all strategies"""
+    actions = {}
+    configurator = StrategyBaseConfigurator
+    validator = StrategyBaseValidator
 
-    @property
-    def strategies(self) -> Dict[str, Any]:
-        return self._strategies
+    @classmethod
+    def get_doc_root(cls) -> str:
+        return Path(getmodule(cls).__file__).parent
 
-    def load(self):
-        from . import sw_payroll as _
-
-
-def register(klass):
-    Registry._strategies[klass.name] = klass
-
-    # def wrapper_func():
-    #     # Do something before the function.
-    #     func()
-    #     # Do something after the function.
-    return klass
-
-
-class StrategyBaseConfigurator:
-    page = None
+    @classmethod
+    def get_action_description(cls, action: str) -> str:
+        return cls.get_doc_root() / cls.actions[action]
